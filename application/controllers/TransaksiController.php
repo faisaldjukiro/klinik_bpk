@@ -123,9 +123,8 @@ class TransaksiController extends CI_Controller {
     public function riwayatObat()
     {
         if (!$this->db->conn_id) {
-            // $this->session->set_flashdata('error', 'Gagal Terhubung Ke serever. Silahkan cek koneksi anda!');
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"Gagal Terhubung Ke serever. Silahkan cek koneksi anda!</div>');
-            $this->load->view('transaksi/obat_masuk');
+            $this->load->view('transaksi/riwayat_obat');
             return;
         }
         $data['title'] = 'Riwayat Obat';
