@@ -50,6 +50,7 @@ class Admin_model extends CI_Model
         $this->db->from('tb_obat_keluar a');
         $this->db->join('tb_obat b', 'b.kd_obat = a.kd_obat');
         $this->db->join('tb_peg c', 'c.kd_peg = a.kd_peg');
+        $this->db->join('tb_satuan d', 'd.id_satuan = b.id_satuan');
         $this->db->order_by('a.id_obat_keluar', 'DESC');
         return $this->db->get();
     }
@@ -97,7 +98,7 @@ class Admin_model extends CI_Model
         INNER JOIN tb_subbagian as c ON b.id_subbagian = c.id_subbagian
         INNER JOIN tb_obat as d ON a.kd_obat = d.kd_obat
         WHERE a.tgl_masuk BETWEEN '$start_date' AND '$end_date'
-        UNION
+        UNION ALL
         SELECT 'Obat Keluar' as tipe,  a.tgl_keluar as tgl_transaksi, b.nama_lengkap as nama, c.nama_subbagian as nama_sub, d.nama_obat as nama_obat, a.jumlah_keluar as jumlah, a.riwayat_stok as riwayat
         FROM tb_obat_keluar as a
         INNER JOIN tb_peg as b ON a.kd_peg = b.kd_peg

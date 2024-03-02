@@ -155,7 +155,7 @@ class SettingsController extends CI_Controller
         $data['title'] = 'User Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $this->load->model('Menu_model', 'user');
-
+        
         $data['userr'] = $this->user->getUser();
         $data['subbagiann'] = $this->db->get('tb_subbagian')->result_array();
         $data['role'] = $this->db->get('user_role')->result_array();
@@ -190,6 +190,49 @@ class SettingsController extends CI_Controller
             ];
             $this->db->insert('user', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">User baru ditambahkan!</div>');
+            redirect('settings/user');
+        }
+    }
+
+    public function edit_user()
+    {
+        $data['title'] = 'User Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email[user.email]');
+        $this->form_validation->set_rules('password1', 'Password', 'trim|min_length[3]|matches[password2]', [
+            'matches' => 'Kata sandi tidak cocok !',
+            'min_length' => 'Kata sandi terlalu pendek!'
+        ]);
+        
+        $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|matches[password1]', [
+            'matches' => 'Kata sandi tidak cocok!',
+            'min_length' => 'Kata sandi terlalu pendek!'
+        ]);
+        
+        $this->form_validation->set_rules('role_id', 'Role', 'required');
+
+        if ($this->form_validation->run() ==  false) {
+            $this->load->view('settings/user', $data);
+        } else {
+            $id = $this->input->post('id_user');
+            $email = $this->input->post('email', true);
+            $password = $this->input->post('password1');
+            $data = [
+                'nama' => htmlspecialchars($this->input->post('nama', true)),
+                'email' => htmlspecialchars($email),
+                'image' => 'default.jpg',
+                'role_id' => $this->input->post('role_id'),
+                'is_active' => $this->input->post('is_active'),
+                'id_subbagian' => $this->input->post('id_subbagian'),
+                'date_created' => time()
+            ];
+            if (!empty($password)){
+                $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+            $this->db->where('id_user',$id);
+            $this->db->update('user', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">User Berhasil Di Edit!</div>');
             redirect('settings/user');
         }
     }

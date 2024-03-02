@@ -2,27 +2,146 @@
 <html lang="en">
 
 <head>
-    <?php $this->load->view('template/head')?>
-</head>
+    <?php $this->load->view('template/head') ?>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+    .select2.select2-container {
+        width: 100% !important;
+    }
+
+    .select2.select2-container .select2-selection {
+        border: 1px solid #ccc;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        height: 34px;
+        margin-bottom: 15px;
+        outline: none !important;
+        transition: all .15s ease-in-out;
+    }
+
+    .select2.select2-container .select2-selection .select2-selection__rendered {
+        color: #333;
+        line-height: 32px;
+        padding-right: 33px;
+    }
+
+    .select2.select2-container .select2-selection .select2-selection__arrow {
+        background: #f8f8f8;
+        border-left: 1px solid #ccc;
+        -webkit-border-radius: 0 3px 3px 0;
+        -moz-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
+        height: 32px;
+        width: 33px;
+    }
+
+    .select2.select2-container.select2-container--open .select2-selection.select2-selection--single {
+        background: #f8f8f8;
+    }
+
+    .select2.select2-container.select2-container--open .select2-selection.select2-selection--single .select2-selection__arrow {
+        -webkit-border-radius: 0 3px 0 0;
+        -moz-border-radius: 0 3px 0 0;
+        border-radius: 0 3px 0 0;
+    }
+
+    .select2.select2-container.select2-container--open .select2-selection.select2-selection--multiple {
+        border: 1px solid #34495e;
+    }
+
+    .select2.select2-container .select2-selection--multiple {
+        height: auto;
+        min-height: 34px;
+    }
+
+    .select2.select2-container .select2-selection--multiple .select2-search--inline .select2-search__field {
+        margin-top: 0;
+        height: 32px;
+    }
+
+    .select2.select2-container .select2-selection--multiple .select2-selection__rendered {
+        display: block;
+        padding: 0 4px;
+        line-height: 29px;
+    }
+
+    .select2.select2-container .select2-selection--multiple .select2-selection__choice {
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin: 4px 4px 0 0;
+        padding: 0 6px 0 22px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 12px;
+        position: relative;
+    }
+
+    .select2.select2-container .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 22px;
+        width: 22px;
+        margin: 0;
+        text-align: center;
+        color: #e74c3c;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .select2-container .select2-dropdown {
+        background: transparent;
+        border: none;
+        margin-top: -5px;
+    }
+
+    .select2-container .select2-dropdown .select2-search {
+        padding: 0;
+    }
+
+    .select2-container .select2-dropdown .select2-search input {
+        outline: none !important;
+        border: 1px solid #34495e !important;
+        border-bottom: none !important;
+        padding: 4px 6px !important;
+    }
+
+    .select2-container .select2-dropdown .select2-results {
+        padding: 0;
+    }
+
+    .select2-container .select2-dropdown .select2-results ul {
+        background: #fff;
+        border: 1px solid #34495e;
+    }
+
+    .select2-container .select2-dropdown .select2-results ul .select2-results__option--highlighted[aria-selected] {
+        background-color: #3498db;
+    }
+    </style>
 
 <body>
 
     <!-- ======= Header ======= -->
-    <?php $this->load->view('template/header')?>
+    <?php $this->load->view('template/header') ?>
 
-    <?php $this->load->view('template/sidebar')?>
+    <?php $this->load->view('template/sidebar') ?>
 
     <main id="main" class="main">
-
-
         <?= $this->session->flashdata('message'); ?>
 
         <div class="pagetitle">
-            <h1>Edit Satuan</h1>
+            <h1>Edit Pegawai</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?= base_url('')?>">Beranda</a></li>
-                    <li class="breadcrumb-item active">Edit Satuan</li>
+                    <li class="breadcrumb-item"><a href="<?= base_url('') ?>">Beranda</a></li>
+                    <li class="breadcrumb-item active">Edit Pegawai</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -30,20 +149,89 @@
         <section class="section ">
             <div class="row center">
                 <div class="col-lg-12">
-                    <div class="card mx-auto border" style="max-width: 50%;">
+                    <div class="card mx-auto border" style="max-width:50vw;">
                         <div class="card-header bg-primary text-white p-2 text-center">
-                            Edit Satuan
+                            Edit Pegawai
                         </div>
                         <div class="card-body">
                             <br>
-                            <form action="<?= base_url('master/satuan-edit/').$satuan['id_satuan'] ?>" method="post">
+                            <form action="<?= base_url('pegawai/edit/').$pegawai['kd_peg'] ?>" method="post">
                                 <div class="row mb-3">
-                                    <input type="hidden" name="id_satuan" value="<?= $satuan['id_satuan']?>">
-                                    <label for="nama_satuan" class="col-sm-2 col-form-label">Nama</label>
+                                    <label for="kd_peg" class="col-sm-2 col-form-label">Kode Pegawai</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="nama_satuan" id="nama_satuan"
-                                            value="<?= $satuan['nama_satuan']?>">
-                                        <small class=" text-danger"><?= form_error('nama_satuan');?></small>
+                                        <input type="text" class="form-control" name="kd_peg" readonly id="kd_peg"
+                                            value="<?= $pegawai['kd_peg'] ?>">
+                                        <small class="text-danger"><?= form_error('kd_peg'); ?></small>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="nama_lengkap" class="col-sm-2 col-form-label">Nama Lengkap</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="nama_lengkap" id="nama_lengkap"
+                                            value="<?= $pegawai['nama_lengkap'] ?>"> <small
+                                            class=" text-danger"><?= form_error('nama_lengkap'); ?></small>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="id_subbagian" class="col-sm-2 col-form-label">Sub Bagian</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="id_subbagian" id="subbagian"
+                                            style="width: 100%">
+                                            <option value=""></option>
+                                            <?php foreach($subbgaian as $stat):?>
+                                            <option value="<?= $stat['id_subbagian']?>"
+                                                <?php if ($stat['id_subbagian'] == $pegawai['id_subbagian']) : ?>
+                                                selected<?php endif; ?>>
+                                                <?= $stat['nama_subbagian']?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <small class="text-danger"><?= form_error('id_subbagian'); ?></small>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="id_staf" class="col-sm-2 col-form-label">Staf</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="id_staf" id="staf" style="width: 100%">
+                                            <option value=""></option>
+                                            <?php foreach($staf as $stat):?>
+                                            <option value="<?= $stat['id_staf']?>"
+                                                <?php if ($stat['id_staf'] == $pegawai['id_staf']) : ?>
+                                                selected<?php endif; ?>>
+                                                <?= $stat['nama_staf']?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <small class="text-danger"><?= form_error('id_staf'); ?></small>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="jenis_kelamin" id="jenis_kelamin"
+                                            style="width: 100%">
+                                            <option value=""></option>
+                                            <option value="Laki-Laki"
+                                                <?php echo set_select('jenis_kelamin', 'Laki-Laki', (isset($pegawai['jenis_kelamin']) && $pegawai['jenis_kelamin'] == 'Laki-Laki')); ?>>
+                                                Laki-Laki</option>
+                                            <option value="perempuan"
+                                                <?php echo set_select('jenis_kelamin', 'perempuan', (isset($pegawai['jenis_kelamin']) && $pegawai['jenis_kelamin'] == 'perempuan')); ?>>
+                                                Perempuan</option>
+                                        </select>
+                                        <small class="text-danger"><?= form_error('jenis_kelamin'); ?></small>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="tgl_lahir" class="col-sm-2 col-form-label">Tgl Lahir</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="tgl_lahir" id="tgl_lahir"
+                                            value="<?=$pegawai['tgl_lahir']?>">
+                                        <small class="text-danger"><?= form_error('tgl_lahir'); ?></small>
                                     </div>
                                 </div>
 
@@ -52,24 +240,56 @@
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                     <button type="reset" class="btn btn-secondary">Hapus</button>
                                 </div>
-                            </form><!-- End Horizontal Form -->
+                            </form>
 
                         </div>
                     </div>
                 </div>
             </div>
-
         </section>
 
     </main><!-- End #main -->
     <!-- ======= Footer ======= -->
-    <?php $this->load->view('template/footer')?>
+    <?php $this->load->view('template/footer') ?>
     <!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
 
-    <?php $this->load->view('template/js')?>
+
+    <?php $this->load->view('template/js') ?>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#tgl_lahir").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+        });
+
+        $('#subbagian').select2({
+            closeOnSelect: true,
+            allowClear: true
+
+        });
+    });
+    $(document).ready(function() {
+        $('#staf').select2({
+            closeOnSelect: true,
+            allowClear: true
+
+        });
+    });
+    $(document).ready(function() {
+        $('#jenis_kelamin').select2({
+            closeOnSelect: true,
+            allowClear: true
+
+        });
+    });
     </script>
 
 </body>

@@ -41,8 +41,6 @@ class PegawaiController extends CI_Controller
         }
         $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
         $data['kode_peg'] = "PEG" . $batas;
-        // var_dump($data);
-        // die();
         $this->form_validation->set_rules('kd_peg', 'Kode Pegawai', 'required', [
             "required" => "Kode Pegawai Tidak Boleh Kosong"
         ]);
@@ -70,11 +68,58 @@ class PegawaiController extends CI_Controller
                 'id_staf' => $this->input->post('id_staf'),
                 'id_subbagian' => $this->input->post('id_subbagian'),
                 'tgl_lahir' => $this->input->post('tgl_lahir'),
+                'jenis_kelamin' => $this->input->post('jenis_kelamin'),
                 'id_kel' => 0
-
-
             ]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Pegawai Berhasil ditambahkan!</div>');
+            redirect('pegawai');
+        }
+    }
+    
+    public function e_pegawai($id)
+    {
+        $data['title'] = 'Edit Pegawai';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['pegawai'] = $this->db->get_where('tb_peg',['kd_peg' =>$id])->row_array();
+        $data['staf'] = $this->db->get('tb_staf')->result_array();
+        $data['subbgaian'] = $this->db->get('tb_subbagian')->result_array();
+    
+        $this->form_validation->set_rules('kd_peg', 'Kode Pegawai', 'required', [
+            "required" => "Kode Pegawai Tidak Boleh Kosong"
+        ]);
+        $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required', [
+            "required" => "Nama Lengkap Tidak Boleh Kosong"
+        ]);
+        $this->form_validation->set_rules('id_staf', 'Nama Staf', 'required|trim', [
+            "required" => "Staf Tidak Boleh Kosong"
+        ]);
+        $this->form_validation->set_rules('id_subbagian', 'Nama Subbagian', 'required|trim', [
+            "required" => "Subbagian Tidak Boleh Kosong"
+        ]);
+        $this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required', [
+            "required" => "Tanggal Lahir Tidak Boleh Kosong"
+        ]);
+        $this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'required', [
+            "required" => "Jenis Kelamin Tidak Boleh Kosong"
+        ]);
+        
+        if ($this->form_validation->run() == false) {
+            $this->load->view('pegawai/pegawai_edit', $data);
+        } else {
+            $id = $this->input->post('kd_peg');
+			$data = [
+                'kd_peg' => $this->input->post('kd_peg'),
+                'nama_lengkap' => $this->input->post('nama_lengkap'),
+                'id_staf' => $this->input->post('id_staf'),
+                'id_subbagian' => $this->input->post('id_subbagian'),
+                'tgl_lahir' => $this->input->post('tgl_lahir'),
+                'jenis_kelamin' => $this->input->post('jenis_kelamin'),
+                'id_kel' => 0
+			];
+            $this->db->where('kd_peg',$id);
+        	$this->db->update('tb_peg',$data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Pegawai Berhasil di edit!</div>');
             redirect('pegawai');
         }
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 13, 2024 at 03:12 PM
+-- Generation Time: Feb 01, 2024 at 09:24 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,8 +39,8 @@ CREATE TABLE `tb_obat` (
 --
 
 INSERT INTO `tb_obat` (`kd_obat`, `nama_obat`, `id_satuan`, `stok`) VALUES
-('OBT00001', 'DEMACOLIN', '21', '25'),
-('OBT00002', 'FLUCADEX', '21', '0'),
+('OBT00001', 'DEMACOLIN', '21', '0'),
+('OBT00002', 'FLUCADEX', '21', '10'),
 ('OBT00003', 'HANDSANITIZER', '21', '0'),
 ('OBT00004', 'METHYLPREDNISOLONE (RHEMAFAR) 4mg', '21', '0'),
 ('OBT00005', 'MYLANTA SYRUP 50mL', '8', '0'),
@@ -254,19 +254,17 @@ CREATE TABLE `tb_obat_keluar` (
   `aturan_pakai` varchar(255) NOT NULL,
   `kd_peg` varchar(255) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `booking` int(11) NOT NULL
+  `booking` int(11) NOT NULL,
+  `riwayat_stok` varchar(255) NOT NULL,
+  `trs_obat` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tb_obat_keluar`
 --
 
-INSERT INTO `tb_obat_keluar` (`id_obat_keluar`, `tgl_keluar`, `kd_obat`, `jumlah_keluar`, `aturan_pakai`, `kd_peg`, `id_user`, `booking`) VALUES
-(12, '2023-12-27', 'OBT00001', 1, '2x1 Sesudah Makan', 'PEG00001', 3, 0),
-(13, '2023-12-31', 'OBT00001', 1, '2x1 Sesudah Makan', 'PEG00001', 3, 0),
-(14, '2024-01-02', 'OBT00001', 1, '2x1 Sesudah Makan', 'PEG00001', 3, 0),
-(15, '2023-12-31', 'OBT00001', 1, '2x1 Sesudah Makan', 'PEG00001', 3, 0),
-(16, '2023-12-29', 'OBT00002', 10, '2x1 Sesudah Makan', 'PEG00002', 3, 0);
+INSERT INTO `tb_obat_keluar` (`id_obat_keluar`, `tgl_keluar`, `kd_obat`, `jumlah_keluar`, `aturan_pakai`, `kd_peg`, `id_user`, `booking`, `riwayat_stok`, `trs_obat`) VALUES
+(20, '2024-01-30', 'OBT00001', 1, '2x1 Sesudah Makan', 'PEG00001', 3, 0, '0', 'PEG00001/2024-01-30');
 
 -- --------------------------------------------------------
 
@@ -291,7 +289,8 @@ CREATE TABLE `tb_obat_masuk` (
 --
 
 INSERT INTO `tb_obat_masuk` (`id_obat_masuk`, `kd_obat`, `id_supplier`, `id_user`, `harga_satuan`, `jumlah_masuk`, `tgl_masuk`, `tgl_kadaluwarsa`, `riwayat_stok`) VALUES
-(8, 'OBT00001', 5, 3, ' 1500', '25', '2024-01-10', '2024-12-02', '25');
+(17, 'OBT00001', 4, 3, ' 10000', '1', '2024-01-27', '2024-01-31', '1'),
+(18, 'OBT00002', 5, 3, ' 15000', '10', '2024-01-30', '2024-01-31', '10');
 
 -- --------------------------------------------------------
 
@@ -312,7 +311,7 @@ CREATE TABLE `tb_pagu` (
 --
 
 INSERT INTO `tb_pagu` (`kd_pagu`, `total_anggaran`, `anggaran_digunakan`, `sisa_anggaran`, `tahun_anggaran`) VALUES
-('PG00001', ' 51500000', '21537500', '29962500', '2024-01-08');
+('PG00001', ' 52500000', '40010000', '12490000', '2024-01-08');
 
 -- --------------------------------------------------------
 
@@ -336,7 +335,7 @@ CREATE TABLE `tb_peg` (
 
 INSERT INTO `tb_peg` (`kd_peg`, `nama_lengkap`, `jenis_kelamin`, `id_staf`, `id_subbagian`, `tgl_lahir`, `id_kel`) VALUES
 ('PEG00001', 'Faisal Djukiro', 'Laki-Laki', 1, 1, '1998-07-02', 0),
-('PEG00002', 'Firman Ibrahim', 'Laki-Laki', 2, 1, '1998-01-27', 0);
+('PEG00002', 'Firman Ibrahimm', 'Laki-Laki', 2, 1, '1997-06-22', 0);
 
 -- --------------------------------------------------------
 
@@ -358,7 +357,7 @@ CREATE TABLE `tb_pegeseran_pagu` (
 --
 
 INSERT INTO `tb_pegeseran_pagu` (`id_pergeseran`, `kd_pagu`, `jumlah_pergeseran`, `keterangan`, `tgl_pergeseran`, `status`) VALUES
-(8, 'PG00001', ' 21500000', 'Pergeseran untuk kebutuhan acara di aula', '2024-01-06', 'kurang');
+(11, 'PG00001', ' 40000000', 'eaer', '2024-01-01', 'kurang');
 
 -- --------------------------------------------------------
 
@@ -413,7 +412,8 @@ CREATE TABLE `tb_staf` (
 INSERT INTO `tb_staf` (`id_staf`, `nama_staf`) VALUES
 (1, 'Programmer'),
 (2, 'Teknisi'),
-(3, 'Kasubag');
+(3, 'Kasubag'),
+(4, '-');
 
 -- --------------------------------------------------------
 
@@ -432,7 +432,8 @@ CREATE TABLE `tb_subbagian` (
 
 INSERT INTO `tb_subbagian` (`id_subbagian`, `nama_subbagian`) VALUES
 (1, 'Sub Bagian Umum Dan TI'),
-(2, 'SDM');
+(2, 'SDM'),
+(3, 'Pimpinan');
 
 -- --------------------------------------------------------
 
@@ -467,6 +468,7 @@ INSERT INTO `tb_supplier` (`id_supplier`, `nama_supplier`, `no_telp`, `alamat_su
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL,
   `nama` varchar(128) NOT NULL,
+  `id_subbagian` int(11) NOT NULL,
   `email` varchar(128) NOT NULL,
   `image` varchar(128) NOT NULL,
   `password` varchar(256) NOT NULL,
@@ -479,10 +481,10 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `nama`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
-(3, 'Faisal Djukiro', 'faisaldjukiro98@gmail.com', 'default.jpg', '$2y$10$X1/RRNg2E4gD4t4KrBEDVezp3ID0cQpF8Q86njnbA7BpxFX/kfusS', 1, 1, 1698543559),
-(10, 'isal djukiro', 'faisaldjukiro@gmail.com', 'default.jpg', '$2y$10$vE59VlM0zxYtUvn2H2Sw.u5B988boPndx8DyVYIQmIVV0h7jPtrae', 2, 1, 1701013430),
-(11, 'Elda Aldine Paramita Widodo', 'elda@gmail.com', 'default.jpg', '$2y$10$iMohgGeV.XO.ULzNq59oXuuhaB/Tjk2BTQjZTnjdIGyRX5W7SivmW', 4, 1, 1703858044);
+INSERT INTO `user` (`id_user`, `nama`, `id_subbagian`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
+(3, 'Faisal Djukiro', 1, 'faisaldjukiro98@gmail.com', 'default.jpg', '$2y$10$X1/RRNg2E4gD4t4KrBEDVezp3ID0cQpF8Q86njnbA7BpxFX/kfusS', 1, 1, 1698543559),
+(12, 'Elda Aldine Paramita Widodo', 2, 'sdm@gmail.com', 'default.jpg', '$2y$10$Y1ym8731rV8Kig4VQX7MsONT/OqXXlarkJWU9TJFFtETJ27ZjWx5m', 4, 1, 1706627025),
+(13, 'Dr. Jefri Mustapa', 2, 'dokter@gmail.com', 'default.jpg', '$2y$10$UpXBO4ts48SY5cTjDwik.uHBlT7JAdgLVvuYF2/ntclQx22/5qaVm', 2, 1, 1706368046);
 
 -- --------------------------------------------------------
 
@@ -514,7 +516,8 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 (15, 4, 7),
 (16, 2, 1),
 (17, 2, 10),
-(18, 2, 6);
+(18, 2, 6),
+(19, 1, 12);
 
 -- --------------------------------------------------------
 
@@ -539,7 +542,8 @@ INSERT INTO `user_menu` (`id`, `menu`, `urutan`) VALUES
 (7, 'Pegawai', 5),
 (8, 'Settings', 7),
 (10, 'Pemeriksaan', 3),
-(11, 'Pagu', 6);
+(11, 'Pagu', 6),
+(12, 'Alkes', 4);
 
 -- --------------------------------------------------------
 
@@ -594,9 +598,11 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 (10, 6, 'Obat Keluar', 'transaksi/obat-keluar', 'bi bi-layer-forward', 1, 0),
 (11, 7, 'Pegawai', 'pegawai', 'ri ri-apps-line', 1, 0),
 (12, 8, 'User Management', 'settings/user', 'bi bi-person-lines-fill', 1, 2),
-(13, 8, 'Role', 'settings/role', 'bi bi-person-check-fill', 1, 1),
+(13, 8, 'Role Management', 'settings/role', 'bi bi-person-check-fill', 1, 1),
 (18, 10, 'Resep Obat', 'pemeriksaan/resep/', 'ri ri-capsule-fill', 1, 0),
-(19, 11, 'Pagu', 'pagu', 'bi bi-currency-dollar', 1, 0);
+(19, 11, 'Anggaran', 'pagu', 'bi bi-currency-dollar', 1, 0),
+(21, 6, 'Riwayat Obat', 'transaksi/riwayat-obat', 'bi bi-book', 1, 3),
+(22, 12, 'Alat Kesehatan', 'alkes', 'ri ri-dossier-line', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -727,37 +733,37 @@ ALTER TABLE `user_token`
 -- AUTO_INCREMENT for table `tb_obat_keluar`
 --
 ALTER TABLE `tb_obat_keluar`
-  MODIFY `id_obat_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_obat_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tb_obat_masuk`
 --
 ALTER TABLE `tb_obat_masuk`
-  MODIFY `id_obat_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_obat_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tb_pegeseran_pagu`
 --
 ALTER TABLE `tb_pegeseran_pagu`
-  MODIFY `id_pergeseran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pergeseran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_satuan`
 --
 ALTER TABLE `tb_satuan`
-  MODIFY `id_satuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_satuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `tb_staf`
 --
 ALTER TABLE `tb_staf`
-  MODIFY `id_staf` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_staf` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tb_subbagian`
 --
 ALTER TABLE `tb_subbagian`
-  MODIFY `id_subbagian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_subbagian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tb_supplier`
@@ -769,19 +775,19 @@ ALTER TABLE `tb_supplier`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
 --
 ALTER TABLE `user_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_role`
@@ -793,7 +799,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `user_token`

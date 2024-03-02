@@ -74,7 +74,6 @@
                                 <tbody>
                                     <?php $no = 1;
                                     foreach ($obat as $sm) :
-
                                     ?>
                                     <tr>
                                         <th scope="row"><?= $no++ ?></th>

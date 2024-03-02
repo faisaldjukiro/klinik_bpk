@@ -159,9 +159,10 @@
                                 <input type="hidden" name="id_obat_masuk" value="<?= $obat_masuk['id_obat_masuk']?>">
                                 <input type="hidden" class="form-control" name="id_user"
                                     value="<?= $user['id_user'] ?>">
+                                <input type="hidden" name="kd_obat" value="<?= $obat_masuk['kd_obat'] ?>">
                                 <div class="col-md-6">
                                     <label class="form-label">Nama Obat</label>
-                                    <select class="form-control" name="kd_obat" id="kd_barang" style="width: 100%">
+                                    <select class="form-control" id="kd_barang" style="width: 100%" readonly>
                                         <option value=""></option>
                                         <?php foreach($obat as $stat):?>
                                         <option value="<?= $stat['kd_obat']?>"
@@ -205,7 +206,7 @@
                                 <div class=" col-md-6">
                                     <label class="form-label">Stok</label>
                                     <input readonly="readonly" type="number" class="form-control" name="stok" id="stok"
-                                        value="<?= $stok['stok']?>">
+                                        value="<?= $obat_masuk['stok']?>">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Total Stok</label>
@@ -230,12 +231,13 @@
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                     <button type="reset" class="btn btn-secondary">Reset</button>
                                 </div>
-                            </form><!-- End Multi Columns Form -->
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
 
     </main><!-- End #main -->
     <!-- ======= Footer ======= -->
@@ -254,43 +256,53 @@
     $(document).ready(function() {
         $('#satuannnn').select2({
             placeholder: 'Pilih Satuan',
-
-
         });
     });
     </script>
 
     <script type="text/javascript">
-    let hal = '<?= $this->uri->segment(1); ?>';
-
     let satuan = $('#satuan');
     let stok = $('#stok');
     let total = $('#total_stok');
-    let jumlah = hal == 'barangmasuk' ? $('#jumlah_masuk') : $('#jumlah_keluar');
+    let jumlahMasuk = $('#jumlah_masuk');
+    let jumlahMasukAwal;
 
     $(document).on('change', '#kd_barang', function() {
         let url = '<?= base_url('transaksi/getstok/'); ?>' + this.value;
         $.getJSON(url, function(data) {
             satuan.html(data.nama_satuan);
             stok.val(data.stok);
-            total.val(data.stok);
-            jumlah.focus();
+            jumlahMasukAwal = parseInt(data.jumlah_masuk) || 0;
+            jumlahMasuk.val(jumlahMasukAwal);
+            updateTotal();
         });
     });
 
-    $(document).on('keyup', '#jumlah_masuk', function() {
-        let totalStok = parseInt(stok.val()) + parseInt(this.value);
-        total.val(Number(totalStok));
+    $(document).ready(function() {
+        jumlahMasukAwal = parseInt(jumlahMasuk.val()) || 0;
+        updateTotal();
     });
 
-    $(document).on('keyup', '#jumlah_keluar', function() {
-        let totalStok = parseInt(stok.val()) - parseInt(this.value);
-        total.val(Number(totalStok));
+    jumlahMasuk.on('input', function() {
+        updateTotal();
     });
+
+    function updateTotal() {
+        let jumlahMasukVal = parseInt(jumlahMasuk.val()) || 0;
+        let stokVal = parseInt(stok.val()) || 0;
+
+        let totalStok = stokVal - jumlahMasukAwal + jumlahMasukVal;
+
+        total.val(isNaN(totalStok) ? 0 : totalStok);
+        console.log("Total Stok", total.val());
+    }
+
     $(document).ready(function() {
         $('#kd_barang').select2({
             closeOnSelect: true,
-            allowClear: true
+            allowClear: true,
+            disabled: true,
+            // type: hidden
         });
     });
     $(document).ready(function() {
@@ -314,12 +326,10 @@
             rupiah = split[0].substr(0, sisa),
             ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
         if (ribuan) {
             separator = sisa ? '.' : '';
             rupiah += separator + ribuan.join('.');
         }
-
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }

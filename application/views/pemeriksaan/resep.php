@@ -198,10 +198,11 @@
                                     <div class="col-md-10">
                                         <div class="input-group mb-2">
                                             <input type="number" class="form-control" readonly="readonly"
-                                                name="riwayat_stok" id="total_stok">
+                                                name="riwayat_stok" id="total_stok" required>
                                             <input type="hidden" class="form-control" readonly="readonly" id="stok">
                                             <span class="input-group-text" id="satuan">Satuan</span>
                                         </div>
+                                        <small class="text-danger"><?= form_error('riwayat_stok');?></small>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -236,9 +237,9 @@
                 <div class="col-lg-7">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Inputan 10 Terakhir</h5>
+                            <h5 class="card-title">Riwayat Resep</h5>
                             <form action="">
-                                <table class="table table-striped ">
+                                <table class="table table-striped datatable">
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
@@ -263,9 +264,17 @@
                                             <td><?= $sm['aturan_pakai']; ?></td>
 
                                             <td><?= date_format($tanggalKeluar,"d-m-Y"); ?></td>
-                                            <td> <a type="button" class="badge bg-danger"
-                                                    data-bs-target="#hapus<?= $sm['id_obat_keluar']; ?>"
-                                                    data-bs-toggle="modal"><i class="bi bi-trash"></i></a></td>
+                                            <td>
+                                                <a type="button" class="badge bg-primary" title="Pengembalian Obat"
+                                                    data-bs-target="#kembali<?= $sm['id_obat_keluar']; ?>"
+                                                    data-bs-toggle="modal"><i
+                                                        class="bi bi-skip-backward-circle"></i></a>
+                                                <a type="button" class="badge bg-danger" title="Hapus Obat"
+                                                    data-bs-target=" #hapus<?= $sm['id_obat_keluar']; ?>"
+                                                    data-bs-toggle="modal"><i class="bi bi-trash"></i></a>
+
+                                            </td>
+
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -296,8 +305,8 @@
                                     <p>Nama Obat: <b><?php echo $m['nama_obat']; ?></b></p>
                                 </div>
                                 <input type="hidden" name="id_obat_keluar" value="<?php echo $m['id_obat_keluar']; ?>">
-                                <input type="text" name="jumlah_keluar" value="<?php echo $m['jumlah_keluar']; ?>">
-                                <input type="text" name="kd_obat" value="<?php echo $m['kd_obat']; ?>">
+                                <input type="hidden" name="jumlah_keluar" value="<?php echo $m['jumlah_keluar']; ?>">
+                                <input type="hidden" name="kd_obat" value="<?php echo $m['kd_obat']; ?>">
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Keluar</button>
@@ -310,6 +319,65 @@
             </div>
             <?php endforeach; ?>
             <!-- End hapus-->
+
+            <!-- pengmbalian obat -->
+            <?php $no = 0;
+            foreach ($listobat as $m) : $no++; ?>
+            <div class="modal fade" id="kembali<?= $m['id_obat_keluar']; ?>" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pengembalian Resep</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" method="post"
+                                action="<?php echo base_url('pemeriksaan/kembaliresep') ?>">
+                                <div class="modal-body">
+                                    <p>Anda yakin mau mengembalikan</p>
+                                    <div class="row mb-1">
+                                        <label for="nama_lengkap" class="col-sm-2 col-form-label">Nama</label>
+                                        <div class="col-sm-10 d-flex align-items-center">
+                                            <span><b><?php echo $m['nama_lengkap']; ?></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label for="nama_obat" class="col-sm-2 col-form-label">Obat</label>
+                                        <div class="col-sm-10 d-flex align-items-center">
+                                            <span><b><?php echo $m['nama_obat']; ?></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">Jumlah</label>
+                                        <div class="col-sm-10 d-flex align-items-center">
+                                            <span><b><?php echo $m['jumlah_keluar']; ?>
+                                                    <?php echo $m['nama_satuan']; ?></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">Jumlah</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" name="jumlah_kembali"
+                                                placeholder="Tidak Bisa Lebih Dari jumlah Pertama" min="1" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id_obat_keluar" value="<?php echo $m['id_obat_keluar']; ?>">
+                                <input type="hidden" name="jumlah_keluar" value="<?php echo $m['jumlah_keluar']; ?>">
+                                <input type="hidden" name="kd_obat" value="<?php echo $m['kd_obat']; ?>">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Keluar</button>
+                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+            <!-- pengembalian obat-->
         </section>
 
     </main>

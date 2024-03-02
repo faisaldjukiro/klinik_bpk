@@ -298,8 +298,8 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="total_anggaran" class="col-form-label">Total Anggaran :</label>
-                                    <input type="text" class="form-control " name="total_anggaran" id="rupiah" required
-                                        autocomplete='off'>
+                                    <input type="text" class="form-control " name="total_anggaran" id="rupiahtotal"
+                                        required autocomplete='off'>
                                 </div>
 
                                 <div class="form-group mb-3">
@@ -477,30 +477,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     </script>
-
     <script type="text/javascript">
-    var rupiah = document.getElementById('rupiah');
-    rupiah.addEventListener('keyup', function(e) {
-        rupiah.value = formatRupiah(this.value, 'Rp. ');
-    });
-
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-    }
-
     $(function() {
         $("#pagu").datepicker({
             dateFormat: 'yy-mm-dd',
@@ -520,70 +497,50 @@
             dropdownParent: $('#kuarangpergeseran')
         });
 
+        $(document).ready(function() {
+            $('#kd_paguu').select2({
+                closeOnSelect: true,
+                allowClear: true,
+                dropdownParent: $('#kuarangpergeseran')
+            });
+        });
+        $(document).ready(function() {
+            $('#kd_paguuu').select2({
+                closeOnSelect: true,
+                allowClear: true,
+                dropdownParent: $('#tambahpergeseran')
+            });
+        });
     });
     </script>
 
-
     <script type="text/javascript">
-    $(document).ready(function() {
-        $('#kd_paguu').select2({
-            closeOnSelect: true,
-            allowClear: true,
-            dropdownParent: $('#kuarangpergeseran')
+    function setupRupiahFormatter(elementId) {
+        var rupiahElement = document.getElementById(elementId);
+
+        rupiahElement.addEventListener('keyup', function(e) {
+            rupiahElement.value = formatRupiah(this.value, 'Rp. ');
         });
-    });
-    $(document).ready(function() {
-        $('#kd_paguuu').select2({
-            closeOnSelect: true,
-            allowClear: true,
-            dropdownParent: $('#tambahpergeseran')
-        });
-    });
 
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-    var rupiah1 = document.getElementById('rupiah1');
-    rupiah1.addEventListener('keyup', function(e) {
-        rupiah1.value = formatRupiah1(this.value, 'Rp. ');
-    });
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
 
-    function formatRupiah1(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah1 = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah1 += separator + ribuan.join('.');
+            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
-
-        rupiah1 = split[1] != undefined ? rupiah1 + ',' + split[1] : rupiah1;
-        return prefix == undefined ? rupiah1 : (rupiah1 ? 'Rp. ' + rupiah1 : '');
     }
-
-    var rupiah2 = document.getElementById('rupiah2');
-    rupiah2.addEventListener('keyup', function(e) {
-        rupiah2.value = formatRupiah2(this.value, 'Rp. ');
-    });
-
-    function formatRupiah2(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah2 = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah2 += separator + ribuan.join('.');
-        }
-
-        rupiah2 = split[1] != undefined ? rupiah2 + ',' + split[1] : rupiah2;
-        return prefix == undefined ? rupiah2 : (rupiah2 ? 'Rp. ' + rupiah2 : '');
-    }
+    setupRupiahFormatter('rupiahtotal');
+    setupRupiahFormatter('rupiah1');
+    setupRupiahFormatter('rupiah2');
     </script>
 
     <script type="text/javascript">

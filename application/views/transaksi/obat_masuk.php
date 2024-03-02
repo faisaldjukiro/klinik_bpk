@@ -99,6 +99,9 @@
                                         <td><?= $sm['riwayat_stok'] . " " . $sm['nama_satuan']; ?></td>
                                         </td>
                                         <td>
+                                            <a type="button"
+                                                href="<?= base_url('transaksi/obat-masuk-edit/') . $sm['id_obat_masuk']; ?>"
+                                                class="badge bg-primary"><i class="bi bi-pencil"></i></a>
                                             <a type="button" class="badge bg-danger"
                                                 data-bs-target="#hapus<?= $sm['id_obat_masuk']; ?>"
                                                 data-bs-toggle="modal"><i class="bi bi-trash"></i></a>
@@ -124,22 +127,28 @@
             </div>
             <!-- modal hapus -->
             <?php $no = 0;
-            foreach ($obat_masuk as $m) : $no++; ?>
-            <div class="modal fade" id="hapus<?= $m['id_supplier']; ?>" tabindex="-1"
+            foreach ($obat_masuk as $sm) : $no++; ?>
+            <div class="modal fade" id="hapus<?= $sm['id_obat_masuk']; ?>" tabindex="-1"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Hapus Supplier</h5>
+                            <h5 class="modal-title">Hapus Obat Masuk</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form class="form-horizontal" method="post"
-                                action="<?php echo base_url('master/supplier-hapus') ?>">
+                                action="<?php echo base_url('transaksi/obat-masuk-hapus') ?>">
                                 <div class="modal-body">
-                                    <p>Anda yakin mau menghapus <b><?php echo $m['nama_obat']; ?> ?</b></p>
+                                    <p>Nama Obat: <b><?php echo $sm['nama_obat']; ?></b></p>
+                                    <p>Jumlah Masuk:
+                                        <b><?php echo $sm['jumlah_masuk']; ?></b> <b><?php echo $sm['nama_satuan']; ?>
+                                    </p>
                                 </div>
-                                <input type="hidden" name="id_supplier" value="<?php echo $m['id_supplier']; ?>">
+                                <input type="text" name="id_obat_masuk" value="<?php echo $sm['id_obat_masuk']; ?>">
+                                <input type="text" name="kd_obat" value="<?php echo $sm['kd_obat']; ?>">
+                                <input type="text" name="jumlah_masuk" value="<?php echo $sm['jumlah_masuk']; ?>">
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Keluar</button>

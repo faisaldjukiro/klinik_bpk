@@ -73,6 +73,7 @@ $route['settings/submenu'] = 'SettingsController/submenu';
 $route['settings/editsubmenu'] = 'SettingsController/editSubmenu';
 $route['settings/hapussubmenu'] = 'SettingsController/hapusSubmenu';
 $route['settings/user'] = 'SettingsController/user';
+$route['settings/edit_user'] = 'SettingsController/edit_user';
 $route['settings/role'] = 'SettingsController/role';
 $route['settings/changeAccess'] = 'SettingsController/changeAccess';
 $route['settings/roleaccess/(:any)'] = 'SettingsController/roleaccess/$1';
@@ -100,8 +101,7 @@ $route['master/obat-hapus'] = 'MasterController/h_obat';
 $route['pemeriksaan'] = 'PemeriksaanController';
 $route['pemeriksaan/resep'] = 'PemeriksaanController/resepObat';
 $route['pemeriksaan/resephapus'] = 'PemeriksaanController/hapusResep';
-
-// $route['pemeriksaan/resepTambah'] = 'PemeriksaanController/resepTambah';
+$route['pemeriksaan/kembaliresep'] = 'PemeriksaanController/pengembalianResep';
 $route['pemeriksaan/obat/getAjax/(:any)'] = 'PemeriksaanController/getAjax/$1';
 $route['pemeriksaan/store'] = 'PemeriksaanController/store';
 //end pemeriksaan
@@ -110,16 +110,16 @@ $route['pemeriksaan/store'] = 'PemeriksaanController/store';
 $route['transaksi/obat-masuk'] = 'TransaksiController';
 $route['transaksi/obat-masuk-tambah'] = 'TransaksiController/t_obatMasuk';
 $route['transaksi/obat-masuk-edit/(:any)'] = 'TransaksiController/e_obatMasuk/$1';
+$route['transaksi/obat-masuk-hapus'] = 'TransaksiController/h_obatMasuk/';
 $route['transaksi/obat-keluar'] = 'TransaksiController/obatKeluar';
 $route['transaksi/riwayat-obat'] = 'TransaksiController/riwayatObat';
 $route['transaksi/export'] = 'TransaksiController/exportRiwayatt';
-
-
 //end transaksi
 
 //pegawai
 $route['pegawai'] = 'PegawaiController';
 $route['pegawai/tambah'] = 'PegawaiController/t_pegawai';
+$route['pegawai/edit/(:any)'] = 'PegawaiController/e_pegawai/$1';
 
 //end pegawai
 
@@ -127,9 +127,11 @@ $route['pegawai/tambah'] = 'PegawaiController/t_pegawai';
 $route['pagu'] = 'PaguController';
 $route['pagu/pergeserankurang'] = 'PaguController/kurangpergeseran';
 $route['pagu/pergeserantambah'] = 'PaguController/tambahpergeseran';
+//and pagu
 
-
-//pagu
+//alkes
+$route['kesehatan'] = 'AlkesController';
+//end alkse
 
 //get
 $route['transaksi/getstok/(:any)'] = 'TransaksiController/getStok/$1';

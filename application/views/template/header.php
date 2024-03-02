@@ -102,13 +102,15 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6><?= $user['nama'];?></h6>
-                        <span>Programmer</span>
+                        <span>
+                            <!-- <?= $user['role'];?> -->
+                        </span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
 
-                    <li>
+                    <!-- <li>
                         <a class="dropdown-item d-flex align-items-center" href="<?= base_url('profile')?>">
                             <i class="bi bi-person"></i>
                             <span>Profile</span>
@@ -123,7 +125,7 @@
                             <i class="bi bi-gear"></i>
                             <span>Settings</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <hr class="dropdown-divider">
                     </li>

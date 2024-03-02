@@ -65,9 +65,10 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Nama</th>
-                                        <th scope="col">Email</th>
                                         <th scope="col">Foto</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Bagian</th>
+                                        <th scope="col">Email</th>
                                         <th scope="col">role</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Tgl Buat</th>
@@ -79,11 +80,12 @@
                                         foreach ($userr as $sm) : ?>
                                     <tr>
                                         <th scope="row"><?= $no++ ?></th>
-                                        <td><?= $sm['nama']; ?></td>
-                                        <td><?= $sm['email']; ?></td>
                                         <td><img src="<?= base_url('img/') .$sm['image']?> " alt="image" width="35"
                                                 height="35">
                                         </td>
+                                        <td><?= $sm['nama']; ?></td>
+                                        <td><?= $sm['nama_subbagian']; ?></td>
+                                        <td><?= $sm['email']; ?></td>
                                         <!-- <td><?= $sm['image']; ?></td> -->
                                         <td><?= $sm['role']; ?></td>
                                         <td><?php if($sm['is_active'] === '1') { ?>
@@ -145,7 +147,6 @@
                                     <input type="password" id="password1" name="password1" class="form-control"
                                         placeholder="">
                                     <span class="input-group-text" id="togglePassword">
-                                        <!-- Ganti dengan ikon mata Font Awesome jika Anda menggunakannya -->
                                         <i class="bi bi-eye-slash" id="eyeIcon"></i>
                                     </span>
                                 </div>
@@ -156,8 +157,7 @@
                                     <input type="password" id="password2" name="password2" class="form-control"
                                         placeholder="">
                                     <span class="input-group-text" id="togglePassword2">
-                                        <!-- Ganti dengan ikon mata Font Awesome jika Anda menggunakannya -->
-                                        <i class="bi bi-eye-slash" id="eyeIcon"></i>
+                                        <i class="bi bi-eye-slash" id="eyeIcon2"></i>
                                     </span>
                                 </div>
                                 <small class="text-danger"><?= form_error('password2');?></small>
@@ -201,44 +201,70 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Edit Sub Menu</h5>
+                            <h5 class="modal-title">Edit User</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="<?= base_url('settings/editsubmenu') ?>" method="post">
-                                <input type="hidden" name="id_user" value="<?php echo $sm['id_user'] ?>">
-
+                            <form action="<?= base_url('settings/edit_user') ?>" method="post">
                                 <div class="form-group">
-                                    <label for="title" class="col-form-label">Title :</label>
-                                    <input type="text" class="form-control border" name="nama" id="title"
-                                        value="<?php echo $sm['nama'];?>" required>
+                                    <input type="hidden" name="id_user" value="<?= $sm['id_user']?>">
+                                    <label for="nama" class="col-form-label">Nama :</label>
+                                    <input type="text" class="form-control border" name="nama" id="nama"
+                                        value="<?= $sm['nama'];?>" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="menu_id" class="col-form-label">Menu :</label>
-                                    <select name="menu_id" id="menu_id" class="form-control">
-                                        <?php foreach($role as $stat):?>
-                                        <option value="<?= $stat['id']?>" <?php if ($stat['id'] == $sm['menu_id']) : ?>
+                                    <label for="id_subbagian" class="col-form-label">Sub Bagian :</label>
+                                    <select name="id_subbagian" id="id_subbagian" class="form-control" required>
+                                        <option value=""></option>
+                                        <?php foreach($subbagiann as $stat):?>
+                                        <option value="<?= $stat['id_subbagian']?>"
+                                            <?php if ($stat['id_subbagian'] == $sm['id_subbagian']) : ?>
                                             selected<?php endif; ?>>
-                                            <?= $stat['menu']?>
+                                            <?= $stat['nama_subbagian']?>
                                         </option>
                                         <?php endforeach; ?>
-
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="url" class="col-form-label">Url :</label>
-                                    <input type="text" name="url" class="form-control border" id="url"
-                                        value="<?php echo $sm['url'];?>" required>
+                                    <label for="email" class="col-form-label">Email :</label>
+                                    <input type="email" class="form-control border" name="email" id="email"
+                                        value="<?= $sm['email']?>" required>
                                 </div>
 
-                                <div class="form-group  mr-1">
-                                    <label for="icon" class="col-form-label">Icon :</label>
-                                    <input type="text" class="form-control border" name="icon" id="icon"
-                                        value="<?php echo $sm['icon'];?>" required>
-                                    <!-- <span class="breadcrumb-item">Harus Di Awali Dingn bi bi-</span> -->
+                                <label for="password1" class="col-form-label">Password :</label>
+                                <div class="input-group">
+                                    <input type="password" id="password1" name="password1" class="form-control"
+                                        placeholder="">
+                                    <span class="input-group-text" id="togglePasswordedit">
+                                        <i class="bi bi-eye-slash" id="eyeIconedit"></i>
+                                    </span>
                                 </div>
-                                <div class="form-group  p-2">
+                                <small class="text-danger"><?= form_error('password1');?></small>
+
+                                <label for=" password2" class="col-form-label">Ulangi Password :</label>
+                                <div class="input-group">
+                                    <input type="password" id="password2" name="password2" class="form-control"
+                                        placeholder="">
+                                    <span class="input-group-text" id="togglePasswordedit2">
+                                        <i class="bi bi-eye-slash" id="eyeIconedit2"></i>
+                                    </span>
+                                </div>
+                                <small class="text-danger"><?= form_error('password2');?></small>
+
+                                <div class="form-group">
+                                    <label for="role_id" class="col-form-label">Role :</label>
+                                    <select name="role_id" id="role_id" class="form-control">
+                                        <option value=""></option>
+                                        <?php foreach ($role as $m) : ?>
+                                        <option value="<?= $m['role_id']?>"
+                                            <?php if ($m['role_id'] == $sm['role_id']) : ?> selected<?php endif; ?>>
+                                            <?= $m['role']?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="1" name="is_active"
                                             id="is_active" checked>
@@ -303,25 +329,26 @@
 
     <?php $this->load->view('template/js')?>
     <script>
-    const passwordInput = document.getElementById('password1');
-    const passwordInput2 = document.getElementById('password2');
-    const eyeIcon = document.getElementById('eyeIcon');
-    const togglePassword = document.getElementById('togglePassword');
-    const togglePassword2 = document.getElementById('togglePassword2');
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInputs = [document.getElementById('password1'), document.getElementById('password2')];
+        const eyeIcons = [document.getElementById('eyeIcon'), document.getElementById('eyeIcon2'), document
+            .getElementById('eyeIconedit'), document.getElementById('eyeIconedit2')
+        ];
+        const togglePasswords = [document.getElementById('togglePassword'), document.getElementById(
+            'togglePassword2'), document.getElementById('togglePasswordedit'), document.getElementById(
+            'togglePasswordedit2')];
 
-    togglePassword.addEventListener('click', function() {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        // Ganti ikon mata terbuka/tutup di sini (Opsional)
-        eyeIcon.classList.toggle('bi-eye');
-        eyeIcon.classList.toggle('bi-eye-slash');
-    })
-    togglePassword2.addEventListener('click', function() {
-        const type = passwordInput2.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput2.setAttribute('type', type);
-        // Ganti ikon mata terbuka/tutup di sini (Opsional)
-        eyeIcon.classList.toggle('bi-eye');
-        eyeIcon.classList.toggle('bi-eye-slash');
+        togglePasswords.forEach((togglePassword, index) => {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInputs[index].getAttribute('type') === 'password' ?
+                    'text' : 'password';
+                passwordInputs[index].setAttribute('type', type);
+
+                // Ganti ikon mata terbuka/tutup di sini (Opsional)
+                eyeIcons[index].classList.toggle('bi-eye');
+                eyeIcons[index].classList.toggle('bi-eye-slash');
+            });
+        });
     });
     </script>
 

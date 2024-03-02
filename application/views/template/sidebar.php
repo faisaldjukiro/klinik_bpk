@@ -49,7 +49,12 @@
         <?php endforeach;?>
 
         <?php endforeach;?>
-
+        <li class="nav-item">
+            <a class="nav-link collapsed text-danger" href="<?= base_url('LoginController/logout')?>">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Keluar</span>
+            </a>
+        </li><!-- End Blank Page Nav -->
 
 
     </ul>

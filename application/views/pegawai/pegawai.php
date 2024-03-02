@@ -83,8 +83,7 @@
                                         <td><?= $sm['jenis_kelamin']; ?></td>
                                         <td><?= $sm['tgl_lahir']; ?></td>
                                         <td>
-                                            <a type="button"
-                                                href="<?= base_url('master/satuan-edit/') . $sm['kd_peg']; ?>"
+                                            <a type="button" href="<?= base_url('pegawai/edit/') . $sm['kd_peg']; ?>"
                                                 class="badge bg-primary"><i class="bi bi-pencil"></i></a>
 
                                             <a type="button" class="badge bg-danger"
