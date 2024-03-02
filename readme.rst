@@ -1,2 +1,3 @@
 KLINIK LESTARI BPK
+
 Sistem Informasi KLINIK LESTARI BPK adalah aplikasi berbasis web yang dirancang untuk memodernisasi dan mempermudah manajemen operasional klinik bpk. Aplikasi ini mencakup fitur-fitur seperti manajemen user, pengelolaan rekam medis dan obat, dan sistem laporan untuk memastikan pelayanan yang efisien dan efektif.
