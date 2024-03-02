@@ -14,7 +14,11 @@ class LoginController extends CI_Controller
         if ($this->session->userdata('email')) {
             redirect('beranda');
         }
-
+        if (!$this->db->conn_id) {
+            $this->session->set_flashdata('error', 'Gagal Terhubung Ke serever. Silahkan cek koneksi anda!');
+            $this->load->view('auth/login');
+            return;
+        }
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
             'valid_email' => 'Harus Memasukan Email',
             'required' => 'Email tidak boleh kosong'
@@ -27,7 +31,7 @@ class LoginController extends CI_Controller
             $data['title'] = 'Login';
             $this->load->view('auth/login');
         } else {
-            // validasinya success
+   
             $this->_login();
         }
     }
@@ -40,11 +44,10 @@ class LoginController extends CI_Controller
 
         $user = $this->db->get_where('user', ['email' => $email])->row_array();
 
-        // jika usernya ada
         if ($user) {
-            // jika usernya aktif
+    
             if ($user['is_active'] == 1) {
-                // cek password
+       
                 if (password_verify($password, $user['password'])) {
                     $data = [
                         'email' => $user['email'],

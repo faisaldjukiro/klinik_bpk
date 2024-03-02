@@ -16,6 +16,12 @@ class TransaksiController extends CI_Controller {
     }
 	public function index()
 	{
+        if (!$this->db->conn_id) {
+            // $this->session->set_flashdata('error', 'Gagal Terhubung Ke serever. Silahkan cek koneksi anda!');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"Gagal Terhubung Ke serever. Silahkan cek koneksi anda!</div>');
+            $this->load->view('transaksi/obat_masuk');
+            return;
+        }
 		$data['title'] = 'Obat Masuk';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $this->db->join('tb_supplier b', 'a.id_supplier = b.id_supplier');
@@ -31,6 +37,12 @@ class TransaksiController extends CI_Controller {
 
     public function t_obatMasuk()
 	{
+        if (!$this->db->conn_id) {
+            // $this->session->set_flashdata('error', 'Gagal Terhubung Ke serever. Silahkan cek koneksi anda!');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"Gagal Terhubung Ke serever. Silahkan cek koneksi anda!</div>');
+            $this->load->view('transaksi/obat_masuk');
+            return;
+        }
 		$data['title']  = 'Tambah Obat Masuk';
         $data['user']   = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['obat'] = $this->db->get('tb_obat')->result_array();
@@ -110,6 +122,12 @@ class TransaksiController extends CI_Controller {
 
     public function riwayatObat()
     {
+        if (!$this->db->conn_id) {
+            // $this->session->set_flashdata('error', 'Gagal Terhubung Ke serever. Silahkan cek koneksi anda!');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"Gagal Terhubung Ke serever. Silahkan cek koneksi anda!</div>');
+            $this->load->view('transaksi/obat_masuk');
+            return;
+        }
         $data['title'] = 'Riwayat Obat';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['riwayat'] = $this->db->query("SELECT 'Obat Masuk' as tipe, a.tgl_masuk as tgl_transaksi, b.nama as nama, c.nama_subbagian as nama_sub, d.nama_obat as nama_obat, a.jumlah_masuk as jumlah, a.riwayat_stok as riwayat
