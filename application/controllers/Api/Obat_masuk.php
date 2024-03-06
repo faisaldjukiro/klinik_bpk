@@ -9,8 +9,7 @@ class Obat_Masuk extends RestController {
    {
         try {
             $data = $this->db->get('tb_obat_masuk')->result_array();
-        
-            if ($data) {
+            if ($data !== null) {
                 $this->response([
                     'status' => true,
                     'message' => 'Data berhasil di dapatkan',
